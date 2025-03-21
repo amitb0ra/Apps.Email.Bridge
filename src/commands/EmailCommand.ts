@@ -11,6 +11,7 @@ import {
 import { EmailBridgeApp } from "../../EmailBridgeApp";
 import { sendMessage } from "../helpers/message";
 import { HELP_MESSAGE } from "../constants/dialogue";
+import { auth } from "../auth/auth";
 
 export class EmailCommand implements ISlashCommand {
     public constructor(private readonly app: EmailBridgeApp) {}
@@ -37,6 +38,9 @@ export class EmailCommand implements ISlashCommand {
         switch (command[0]) {
             case "help":
                 sendMessage(read, sender, room, HELP_MESSAGE);
+                break;
+            case "auth":
+                auth(this.app, read, modify, sender, room);
                 break;
         }
     }
