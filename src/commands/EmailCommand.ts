@@ -12,6 +12,7 @@ import { EmailBridgeApp } from "../../EmailBridgeApp";
 import { sendMessage } from "../helpers/message";
 import { HELP_MESSAGE } from "../constants/dialogue";
 import { auth } from "../auth/auth";
+import { getExecutionContext } from "../core/getExecutionContext";
 
 export class EmailCommand implements ISlashCommand {
     public constructor(private readonly app: EmailBridgeApp) {}
@@ -42,6 +43,15 @@ export class EmailCommand implements ISlashCommand {
             case "auth":
                 auth(this.app, read, modify, sender, room);
                 break;
+            default:
+                const executionContext = await getExecutionContext(
+                    http,
+                    command.join(" ")
+                );
+
+                if (executionContext) {
+                    console.log("Execution context: ", executionContext);
+                }
         }
     }
 }
