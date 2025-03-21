@@ -3,6 +3,7 @@ import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
 import { IExecutionContext } from "../definations/IExecutionContext";
 import { EmailBridgeApp } from "../../EmailBridgeApp";
+import { chatSummary } from "./chatSummary";
 
 export async function executeAction(
     app: EmailBridgeApp,
@@ -16,6 +17,7 @@ export async function executeAction(
         switch (actionId) {
             case "summary":
                 console.log("Summary action triggered");
+                chatSummary(user, room, read, http);
                 break;
             case "send-email":
                 console.log("Send email action triggered");
