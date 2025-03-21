@@ -11,5 +11,6 @@
     "name": "Email Bridge",
     "nameSlug": "email-bridge",
     "classFile": "EmailBridgeApp.ts",
-    "description": "A natural language bridge to legacy email system that every single Rocket.Chat user can use."
+    "description": "A natural language bridge to legacy email system that every single Rocket.Chat user can use.",
+    "implements": []
 }

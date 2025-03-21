@@ -1,4 +1,8 @@
-import { IRead, IHttp } from "@rocket.chat/apps-engine/definition/accessors";
+import {
+    IRead,
+    IHttp,
+    IPersistence,
+} from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
 import { sendMessage } from "../helpers/message";
@@ -6,12 +10,15 @@ import { createSummaryPrompt } from "../constants/prompts";
 import { llm } from "../helpers/llmProvider";
 import { IMessageRaw } from "@rocket.chat/apps-engine/definition/messages/IMessageRaw";
 import { ISummary } from "../definations/ISummary";
+import { storeData } from "../helpers/persistence";
 
+// TODO: summarize thread/channel/discussion by time, user, unread, attachments, get assigned tasks etc.
 export async function chatSummary(
     user: IUser,
     room: IRoom,
     read: IRead,
-    http: IHttp
+    http: IHttp,
+    persistence: IPersistence
 ) {
     try {
         const messages = await getRoomMessages(room, read);
@@ -49,6 +56,7 @@ export async function chatSummary(
             );
             return;
         } else {
+            await storeData(persistence, user.id, "SUMMARY", summary);
             await sendMessage(read, user, room, summary.body);
         }
     } catch (error) {

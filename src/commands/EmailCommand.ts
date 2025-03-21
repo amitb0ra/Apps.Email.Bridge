@@ -13,6 +13,7 @@ import { sendMessage } from "../helpers/message";
 import { HELP_MESSAGE } from "../constants/dialogue";
 import { auth } from "../auth/auth";
 import { getExecutionContext } from "../core/getExecutionContext";
+import { executeAction } from "../core/executeAction";
 
 export class EmailCommand implements ISlashCommand {
     public constructor(private readonly app: EmailBridgeApp) {}
@@ -43,6 +44,9 @@ export class EmailCommand implements ISlashCommand {
             case "auth":
                 auth(this.app, read, modify, sender, room);
                 break;
+            case "contact":
+                // contact(); // TODO: contextual bar to manage contacts
+                break;
             default:
                 const executionContext = await getExecutionContext(
                     http,
@@ -51,6 +55,20 @@ export class EmailCommand implements ISlashCommand {
 
                 if (executionContext) {
                     console.log("Execution context: ", executionContext);
+                }
+
+                if (executionContext.actionIds.includes("out-of-context")) {
+                    // TODO: modal to provide more context and retry
+                } else {
+                    await executeAction(
+                        this.app,
+                        sender,
+                        room,
+                        read,
+                        http,
+                        persis,
+                        executionContext
+                    );
                 }
         }
     }

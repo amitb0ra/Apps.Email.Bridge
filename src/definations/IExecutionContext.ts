@@ -8,6 +8,8 @@ export interface IExecutionContext {
         | "out-of-context"
     )[];
     sendEmail?: {
+        subject: string;
+        body: string;
         recipients: string[];
     };
     search?: {
