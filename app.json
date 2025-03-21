@@ -1,0 +1,15 @@
+{
+    "id": "0ae38034-130b-429b-bdd5-751d0985c0e2",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.44.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Amit Bora",
+        "homepage": "https://github.com/amitb0ra/Apps.Email.Bridge",
+        "support": "https://github.com/amitb0ra/Apps.Email.Bridge/issues"
+    },
+    "name": "Email Bridge",
+    "nameSlug": "email-bridge",
+    "classFile": "EmailBridgeApp.ts",
+    "description": "A natural language bridge to legacy email system that every single Rocket.Chat user can use."
+}
