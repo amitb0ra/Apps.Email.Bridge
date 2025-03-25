@@ -10,8 +10,13 @@ export async function getExecutionContext(
     try {
         const prompt = GetExecutionContextFromUserPrompt(userPrompt);
         const response = await llm(http, prompt);
+        const executionContext = JSON.parse(response) as IExecutionContext;
 
-        return JSON.parse(response) as IExecutionContext;
+        if (executionContext.actionIds.includes("out-of-context")) {
+            // TODO: modal to provide more context and retry
+        }
+
+        return executionContext;
     } catch (error) {
         console.error("Error in getUserContext:", error);
         throw new Error("Failed to get user context");

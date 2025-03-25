@@ -50,7 +50,10 @@ export class EmailBridgeApp extends App {
             authUri: "https://accounts.google.com/o/oauth2/auth",
             refreshTokenUri: "https://oauth2.googleapis.com/token",
             revokeTokenUri: "https://oauth2.googleapis.com/revoke",
-            defaultScopes: ["https://mail.google.com/"],
+            defaultScopes: [
+                "https://mail.google.com/",
+                "https://www.googleapis.com/auth/contacts",
+            ],
             authorizationCallback: this.handleCallback.bind(this),
         };
 

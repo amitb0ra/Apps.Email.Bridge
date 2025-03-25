@@ -57,9 +57,7 @@ export class EmailCommand implements ISlashCommand {
                     console.log("Execution context: ", executionContext);
                 }
 
-                if (executionContext.actionIds.includes("out-of-context")) {
-                    // TODO: modal to provide more context and retry
-                } else {
+                if (!executionContext.actionIds.includes("out-of-context")) {
                     await executeAction(
                         this.app,
                         sender,
