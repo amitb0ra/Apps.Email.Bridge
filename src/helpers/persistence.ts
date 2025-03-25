@@ -7,42 +7,53 @@ import {
     RocketChatAssociationRecord,
 } from "@rocket.chat/apps-engine/definition/metadata";
 
-export const storeData = async (
+export const set = async (
     persistence: IPersistence,
-    userId: string,
-    key: string,
+    associationId: string,
     data: object
 ): Promise<void> => {
     const association = new RocketChatAssociationRecord(
         RocketChatAssociationModel.USER,
-        `${userId}#${key}`
+        associationId
     );
-    await persistence.updateByAssociation(association, data, true);
+    try {
+        await persistence.updateByAssociation(association, data, true);
+    } catch (error) {
+        console.error(`Error in set:`, error);
+    }
 };
 
-export const getData = async (
+export const get = async (
     persistenceRead: IPersistenceRead,
-    userId: string,
-    key: string
+    associationId: string
 ): Promise<any> => {
     const association = new RocketChatAssociationRecord(
         RocketChatAssociationModel.USER,
-        `${userId}#${key}`
+        associationId
     );
-    const result = (await persistenceRead.readByAssociation(
-        association
-    )) as Array<any>;
-    return result && result.length ? result[0] : null;
+
+    try {
+        const data = (await persistenceRead.readByAssociation(
+            association
+        )) as Array<object>;
+        return data.length ? data[0] : null;
+    } catch (error) {
+        console.error(`Error in get:`, error);
+        return null;
+    }
 };
 
-export const clearData = async (
+export const clear = async (
     persistence: IPersistence,
-    userId: string,
-    key: string
+    associationId: string
 ): Promise<void> => {
     const association = new RocketChatAssociationRecord(
         RocketChatAssociationModel.USER,
-        `${userId}#${key}`
+        associationId
     );
-    await persistence.removeByAssociation(association);
+    try {
+        await persistence.removeByAssociation(association);
+    } catch (error) {
+        console.error(`Error clearing data for ${associationId}:`, error);
+    }
 };
