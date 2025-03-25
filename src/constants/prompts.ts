@@ -1,44 +1,66 @@
 const GET_EXECUTION_CONTEXT_FROM_USER_PROMPT = `
-You are a system agent tasked with analyzing a user's natural language input to determine the user's intended action related to email interaction. Your goal is to classify the user's intent into one or more valid action IDs and extract the relevant data (such as recipients, search keywords, date ranges, etc.) for each action.
+You are a system agent. Analyze the user's input and extract email/messaging actions.
 
 ### Valid Action IDs:
-- "summary": User wants to summarize a channel, thread or discussion.
-- "send-email": User wants to send an email to specific recipients.
-- "search-email": User wants to retrieve emails based on keywords or date range.
-- "report": User wants to request email statistics, such as total emails.
-- "out-of-context": User's input does not match any of the valid actions above.
+- "summary": Summarize a discussion or thread.
+- "send-email": Send an email.
+- "search-email": Find emails by keyword, sender, or date.
+- "send-message": Send a non-email message.
+- "report": Get email stats or metrics.
+- "out-of-context": If input doesn't match any action above.
 
-### Example Commands and Expected Outputs:
+### Output Format:
+Return a valid JSON object matching this interface:
+\`\`\`ts
+export interface IExecutionContext {
+  "actionIds": "summary"|"send-email"|"search-email"|"send-message"|"report"|"out-of-context";
+  "summary"?: { filter?: { time?: Date, usernames?: string[], unread?: boolean }, result?: { followUp?: boolean, fileSummary?: boolean, assignedTasks?: boolean } },
+  "sendEmail"?: { subject: string, body: string, recipients: string[], cc?: string[], bcc?: string[], attachments?: string[], requires?: string[] },
+  "searchEmail"?: { time?: Date, keywords: string[], unread?: boolean, from?: string[], to?: string[], cc?: string[], bcc?: string[] },
+  "report"?: { time?: Date }
+}
+\`\`\`
 
-1. User Input: "summarize this thread and send it as email to my boss"  
-   Expected Output:  
-   {"actionIds": ["summary", "send-email"], "sendEmail": {"recipients": ["boss"]}}
+Rules:
+1. Return JSON only — no code fences, no text, no comments.
+2. If input is unclear, return: { "actionIds": ["out-of-context"] }
 
-2. User Input: "Can you summarize our discussion?"  
-   Expected Output:  
-   {"actionIds": ["summary"]}
+### Examples:
 
-3. User Input: "Find all emails in March."  
-   Expected Output:  
-   {"actionIds": ["search-email"], "search": {"keywords": ["attachments"], "startDate": "2025-03-01", "endDate": "2025-03-31"}}
+Input: "Summarize this thread and send it to my manager with the weekly report attached."  
+Output:
+\`\`\`json
+{
+  "actionIds": ["summary", "send-email"],
+  "sendEmail": {
+    "recipients": ["manager"],
+    "attachments": ["weekly report"],
+    "requires": ["summary"]
+  }
+}
+\`\`\`
 
-4. User Input: "What's the weather like today?"  
-   Expected Output:  
-   {"actionIds": ["out-of-context"]}
+Input: "Show me all unread emails from Sarah last month"  
+Output:
+\`\`\`json
+{
+  "actionIds": ["search-email"],
+  "searchEmail": {
+    "unread": true,
+    "from": ["Sarah"],
+    "time": "2025-03-01T00:00:00.000Z"
+  }
+}
+\`\`\`
 
-### Rules:
-1. Return only a valid JSON object in the format:  
-   {"actionIds": [...]}
+Input: "What's your favorite color?"  
+Output:
+\`\`\`json
+{ "actionIds": ["out-of-context"] }
+\`\`\`
 
-   Example:  
-   {"actionIds": ["summary", "search"]}
-
-2. Do NOT return anything else (no explanations, no markdown, no formatting).
-
-3. If the user's prompt is ambiguous or lacks context, return:  
-   {"actionIds": ["out-of-context"]}
-
-USER PROMPT: {dialogue}`;
+USER PROMPT: {dialogue}
+`;
 
 export function GetExecutionContextFromUserPrompt(dialogue: string): string {
     return GET_EXECUTION_CONTEXT_FROM_USER_PROMPT.replace(
