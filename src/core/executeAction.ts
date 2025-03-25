@@ -10,7 +10,7 @@ import { EmailBridgeApp } from "../../EmailBridgeApp";
 import { chatSummary } from "./chatSummary";
 import { getReport, searchEmail, sendEmail } from "./gmail";
 import { sendMessage } from "../helpers/message";
-import { getData } from "../helpers/persistence";
+import { get } from "../helpers/persistence";
 
 export async function executeAction(
     app: EmailBridgeApp,
@@ -45,10 +45,9 @@ export async function executeAction(
                     return;
                 }
 
-                const summary = await getData(
+                const summary = await get(
                     read.getPersistenceReader(),
-                    user.id,
-                    "SUMMARY"
+                    `${user.id}#SUMMARY`
                 );
 
                 if (summary) {
@@ -98,9 +97,8 @@ export async function executeAction(
                     read,
                     user,
                     room,
-                    executionContext.search?.keywords,
-                    executionContext.search?.startDate,
-                    executionContext.search?.endDate
+                    executionContext.searchEmail?.keywords,
+                    executionContext.searchEmail?.time
                 );
                 break;
             case "send-message":

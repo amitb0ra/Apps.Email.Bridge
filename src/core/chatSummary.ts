@@ -10,7 +10,7 @@ import { createSummaryPrompt } from "../constants/prompts";
 import { llm } from "../helpers/llmProvider";
 import { IMessageRaw } from "@rocket.chat/apps-engine/definition/messages/IMessageRaw";
 import { ISummary } from "../definations/ISummary";
-import { storeData } from "../helpers/persistence";
+import { set } from "../helpers/persistence";
 
 // TODO: summarize thread/channel/discussion by time, user, unread, attachments, get assigned tasks etc.
 export async function chatSummary(
@@ -56,7 +56,7 @@ export async function chatSummary(
             );
             return;
         } else {
-            await storeData(persistence, user.id, "SUMMARY", summary);
+            await set(persistence, `${user.id}#SUMMARY`, summary);
             await sendMessage(read, user, room, summary.body);
         }
     } catch (error) {
