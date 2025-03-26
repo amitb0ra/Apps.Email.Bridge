@@ -16,7 +16,8 @@ export type ActionId =
 
 export interface SummaryContext {
     filter?: {
-        time?: Date;
+        startDate: Date;
+        endDate: Date;
         usernames?: string[];
         unread?: boolean;
     };
@@ -38,9 +39,10 @@ export interface SendEmailContext {
 }
 
 export interface SearchEmailContext {
-    time?: Date;
+    startDate: Date;
+    endDate: Date;
     keywords: string[];
-    unread?: boolean;    
+    unread?: boolean;
     from?: string[];
     to?: string[];
     cc?: string[];
@@ -48,5 +50,5 @@ export interface SearchEmailContext {
 }
 
 export interface ReportContext {
-    time?: Date;
+    reportType: "daily" | "weekly" | "monthly";
 }
