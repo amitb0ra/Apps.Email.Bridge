@@ -1,5 +1,7 @@
 # 💡 Natural Language Bridge to Legacy Email (Powered by Generative AI)
 
+> This app is in the early stages of development. Please check [TODO.md](TODO.md) for the latest updates.
+
 ## 👥 Mentor(s)
 
 **Vipin Chaudhary**
