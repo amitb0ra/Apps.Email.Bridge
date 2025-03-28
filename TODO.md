@@ -1,0 +1,5 @@
+-   more better code with optimization
+-   better prompts
+-   report daily email statistics (cron jobs maybe?)
+-   more email providers: outlook etc.
+-   confirm before sending email to recipients

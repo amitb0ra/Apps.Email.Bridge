@@ -1,0 +1,372 @@
+[
+  {
+    "prompt": "Summarize this thread.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Can you summarize our discussion?",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Give me a summary of this channel.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Provide a recap of today's conversation.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Summarize the chat about the project.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "I need a quick summary of this discussion.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Summarize the team conversation for me.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Can you provide an overview of this thread?",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Quick summary of this chat please.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Tell me what we discussed in brief.",
+    "expected": [
+      "summarize"
+    ]
+  },
+  {
+    "prompt": "Email this thread to my manager.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Send this conversation to Sarah via email.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "I want to email this summary to the team.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Forward this discussion to my colleague.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Please email the notes to my supervisor.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Email the updates to John.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Send this report to finance via email.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Email this entire chat to the HR department.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Mail this to my boss.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Email the conversation history to support.",
+    "expected": [
+      "send"
+    ]
+  },
+  {
+    "prompt": "Search emails from last week about budget.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Find all emails with attachments from January.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Get my emails containing the word 'invoice'.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Retrieve emails received on March 1st.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Search for emails with PDF files about sales.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Find messages from Alice about the presentation.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Look for last month's emails mentioning deadlines.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Check emails with 'Q1 report' in subject.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Get emails with spreadsheets from February.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "Show emails from last Friday containing meeting notes.",
+    "expected": [
+      "search"
+    ]
+  },
+  {
+    "prompt": "How many emails did I get yesterday?",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "Show me email stats for this week.",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "Give me a count of my daily emails.",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "I want to know my email activity for last month.",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "How many unread emails do I have?",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "Email stats for today please.",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "What's my average daily email count?",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "Show my email history breakdown.",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "Number of emails I received today?",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "Display weekly email report.",
+    "expected": [
+      "report"
+    ]
+  },
+  {
+    "prompt": "What's the weather like today?",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Tell me a joke.",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Can you write a poem about productivity?",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Translate this message into Japanese.",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Play some music.",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Set a timer for 10 minutes.",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "What's the capital of France?",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Tell me a fun fact.",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Define recursion.",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "What is 2 + 2?",
+    "expected": [
+      "out-of-context"
+    ]
+  },
+  {
+    "prompt": "Summarize this thread and email it to my manager.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Find last week's budget email and post the PDF here.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Summarize our meeting notes and send them via email.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Get all sales emails from last month and summarize them.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Retrieve emails about deadlines and send summary to HR.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Summarize and email this discussion to the product team.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Search for emails with 'invoice' and email them to finance.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Give me a summary of this thread and forward it.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Find the attachment from last week and send it to my boss.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  },
+  {
+    "prompt": "Summarize the chat and share it with marketing via email.",
+    "expected": [
+      "summarize",
+      "send"
+    ]
+  }
+]
