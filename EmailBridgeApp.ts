@@ -1,7 +1,12 @@
 import {
     IAppAccessors,
+    IAppInstallationContext,
     IConfigurationExtend,
+    IHttp,
     ILogger,
+    IModify,
+    IPersistence,
+    IRead,
 } from "@rocket.chat/apps-engine/definition/accessors";
 import {
     IAuthData,
@@ -10,8 +15,9 @@ import {
 import { createOAuth2Client } from "@rocket.chat/apps-engine/definition/oauth2/OAuth2";
 import { App } from "@rocket.chat/apps-engine/definition/App";
 import { IAppInfo } from "@rocket.chat/apps-engine/definition/metadata";
-import { EmailBridgeCommand } from "./commands/EmailBridgeCommand";
+import { EmailBridgeCommand } from "./src/commands/EmailBridgeCommand";
 import { OAuth2Client } from "@rocket.chat/apps-engine/server/oauth2/OAuth2Client";
+import { sendHelperMessageOnInstall } from "./src/helpers/message";
 
 export class EmailBridgeApp extends App {
     constructor(info: IAppInfo, logger: ILogger, accessors: IAppAccessors) {
@@ -61,5 +67,17 @@ export class EmailBridgeApp extends App {
             throw new Error("Failed to create OAuth2 client instance");
         }
         return this.oauth2ClientInstance;
+    }
+
+    public async onInstall(
+        context: IAppInstallationContext,
+        read: IRead,
+        http: IHttp,
+        persistence: IPersistence,
+        modify: IModify
+    ): Promise<void> {
+        const { user } = context;
+        await sendHelperMessageOnInstall(user, read, modify);
+        return;
     }
 }

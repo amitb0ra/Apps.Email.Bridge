@@ -1,8 +1,8 @@
 import { IHttp, IRead } from "@rocket.chat/apps-engine/definition/accessors";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms/IRoom";
-import { EmailBridgeApp } from "../EmailBridgeApp";
-import { sendMessage } from "../helpers/sendMessage";
+import { EmailBridgeApp } from "../../EmailBridgeApp";
+import { sendMessage } from "../helpers/message";
 export async function sendEmail(
     app: EmailBridgeApp,
     http: IHttp,

@@ -1,13 +1,13 @@
 import { IRead, IHttp } from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
-import { sendMessage } from "../helpers/sendMessage";
+import { sendMessage } from "../helpers/message";
 import { createSummaryPrompt } from "../constants/prompts";
 import { llm } from "../helpers/llmProvider";
 import { IMessageRaw } from "@rocket.chat/apps-engine/definition/messages/IMessageRaw";
 import { sendEmail } from "./gmail";
 import { ISummary } from "../definations/ISummary";
-import { EmailBridgeApp } from "../EmailBridgeApp";
+import { EmailBridgeApp } from "../../EmailBridgeApp";
 
 export async function chatSummary(
     app: EmailBridgeApp,

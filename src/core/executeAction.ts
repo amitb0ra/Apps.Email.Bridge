@@ -1,11 +1,11 @@
 import { IRead, IHttp } from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
-import { chatSummary } from "../core/chatSummary";
+import { chatSummary } from "./chatSummary";
 import { IExecutionContext } from "../definations/IExecutionContext";
-import { getReport, searchEmail } from "../core/gmail";
-import { EmailBridgeApp } from "../EmailBridgeApp";
-import { sendMessage } from "../helpers/sendMessage";
+import { getReport, searchEmail } from "./gmail";
+import { EmailBridgeApp } from "../../EmailBridgeApp";
+import { sendMessage } from "../helpers/message";
 
 export async function executeAction(
     app: EmailBridgeApp,

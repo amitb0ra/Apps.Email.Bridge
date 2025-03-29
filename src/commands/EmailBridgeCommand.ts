@@ -8,8 +8,8 @@ import {
     ISlashCommand,
     SlashCommandContext,
 } from "@rocket.chat/apps-engine/definition/slashcommands";
-import { EmailBridgeApp } from "../EmailBridgeApp";
-import { sendMessage } from "../helpers/sendMessage";
+import { EmailBridgeApp } from "../../EmailBridgeApp";
+import { sendMessage } from "../helpers/message";
 import { getExecutionContext } from "../core/getExecutionContext";
 import { HELP_MESSAGE } from "../constants/dialogue";
 import { executeAction } from "../core/executeAction";

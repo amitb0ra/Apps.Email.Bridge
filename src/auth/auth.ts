@@ -1,8 +1,8 @@
 import { IRead, IModify } from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
-import { EmailBridgeApp } from "../EmailBridgeApp";
-import { sendMessage } from "../helpers/sendMessage";
+import { EmailBridgeApp } from "../../EmailBridgeApp";
+import { sendMessage } from "../helpers/message";
 
 export async function auth(
     app: EmailBridgeApp,
