@@ -1,4 +1,8 @@
-import { IHttp, IRead } from "@rocket.chat/apps-engine/definition/accessors";
+import {
+    IHttp,
+    IModify,
+    IRead,
+} from "@rocket.chat/apps-engine/definition/accessors";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms/IRoom";
 import { EmailBridgeApp } from "../../EmailBridgeApp";
@@ -101,6 +105,7 @@ export async function searchEmail(
     read: IRead,
     user: IUser,
     room: IRoom,
+    modify: IModify,
     keywords?: string[],
     startDate?: Date,
     endDate?: Date,
@@ -148,6 +153,8 @@ export async function searchEmail(
             }
         );
 
+        console.log("Search response: ", response);
+
         if (response.statusCode === 200 && response.data.messages) {
             const messages = response.data.messages;
             for (const message of messages) {
@@ -159,6 +166,8 @@ export async function searchEmail(
                         },
                     }
                 );
+
+                console.log("Message details: ", messageDetails);
 
                 if (messageDetails.statusCode === 200) {
                     const payload = messageDetails.data.payload;
@@ -172,13 +181,37 @@ export async function searchEmail(
                     const bodyPart = payload.parts?.find(
                         (p: any) => p.mimeType === "text/plain"
                     );
-                    const body = bodyPart
-                        ? atob(
-                              bodyPart.body.data
-                                  .replace(/-/g, "+")
-                                  .replace(/_/g, "/")
-                          )
-                        : "No Body";
+                    const body =
+                        messageDetails.data.snippet || bodyPart
+                            ? atob(
+                                  bodyPart.body.data
+                                      .replace(/-/g, "+")
+                                      .replace(/_/g, "/")
+                              )
+                            : "No Body";
+
+                    const attachments = payload.parts?.filter(
+                        (p: any) => p.filename && p.body.attachmentId
+                    );
+
+                    if (attachments && attachments.length > 0) {
+                        const attachmentIds = attachments.map(
+                            (attachment: any) => attachment.body.attachmentId
+                        );
+
+                        for (const attachmentId of attachmentIds) {
+                            await getAttachment(
+                                app,
+                                http,
+                                read,
+                                user,
+                                room,
+                                modify,
+                                message.id,
+                                attachmentId
+                            );
+                        }
+                    }
 
                     await sendMessage(
                         read,
@@ -276,5 +309,86 @@ export async function getReport(
             "An error occurred while fetching email statistics."
         );
         throw new Error("Failed to fetch email statistics");
+    }
+}
+
+export async function getAttachment(
+    app: EmailBridgeApp,
+    http: IHttp,
+    read: IRead,
+    user: IUser,
+    room: IRoom,
+    modify: IModify,
+    messageId: string,
+    attachmentId: string
+) {
+    const accessToken = await app
+        .getOauth2ClientInstance()
+        .getAccessTokenForUser(user);
+
+    if (!accessToken) {
+        sendMessage(
+            read,
+            user,
+            room,
+            "Access token not found. Please reauthorize the app."
+        );
+        throw new Error("Access token not found");
+    }
+
+    await sendMessage(read, user, room, "Fetching attachments, please wait...");
+
+    try {
+        const attachmentResponse = await http.get(
+            `https://gmail.googleapis.com/gmail/v1/users/me/messages/${messageId}/attachments/${attachmentId}`,
+            {
+                headers: {
+                    Authorization: `Bearer ${accessToken.token}`,
+                },
+            }
+        );
+
+        if (attachmentResponse.statusCode === 200 && attachmentResponse.data) {
+            const attachmentData = attachmentResponse.data.data;
+            const url = `data:application/octet-stream;base64,${attachmentData}`;
+            const downloadBlock = modify.getCreator().getBlockBuilder();
+
+            downloadBlock.addActionsBlock({
+                elements: [
+                    downloadBlock.newButtonElement({
+                        actionId: "authorize",
+                        text: downloadBlock.newPlainTextObject(
+                            "Download Attachment"
+                        ),
+                        url: url.toString(),
+                    }),
+                ],
+            });
+
+            await sendMessage(
+                read,
+                user,
+                room,
+                `Attachment fetched successfully!`,
+                downloadBlock
+            );
+        } else {
+            console.error("Failed to fetch attachment");
+            await sendMessage(
+                read,
+                user,
+                room,
+                "Failed to fetch attachment. Please try again later."
+            );
+        }
+    } catch (error) {
+        console.error("Error in getAttachment function:", error);
+        await sendMessage(
+            read,
+            user,
+            room,
+            "An error occurred while fetching the attachment."
+        );
+        throw new Error("Failed to fetch attachment");
     }
 }

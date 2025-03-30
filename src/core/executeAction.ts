@@ -2,13 +2,14 @@ import {
     IRead,
     IHttp,
     IPersistence,
+    IModify,
 } from "@rocket.chat/apps-engine/definition/accessors";
 import { IRoom } from "@rocket.chat/apps-engine/definition/rooms";
 import { IUser } from "@rocket.chat/apps-engine/definition/users";
 import { IExecutionContext } from "../definations/IExecutionContext";
 import { EmailBridgeApp } from "../../EmailBridgeApp";
-import { chatSummary } from "./chatSummary";
-import { getReport, searchEmail, sendEmail } from "./gmail";
+import { chatSummary } from "../actions/chatSummary";
+import { getReport, searchEmail, sendEmail } from "../actions/gmail";
 import { sendMessage } from "../helpers/message";
 import { get } from "../helpers/persistence";
 
@@ -17,15 +18,17 @@ export async function executeAction(
     user: IUser,
     room: IRoom,
     read: IRead,
+    modify: IModify,
     http: IHttp,
     persistence: IPersistence,
-    executionContext: IExecutionContext
+    executionContext: IExecutionContext,
+    threadId?: string,
 ) {
     for (const actionId of executionContext.actionIds) {
         switch (actionId) {
             case "summary":
                 console.log("Summary action triggered");
-                await chatSummary(user, room, read, http, persistence);
+                await chatSummary(user, room, read, http, persistence, threadId);
                 break;
             case "send-email":
                 console.log("Send email action triggered");
@@ -97,8 +100,10 @@ export async function executeAction(
                     read,
                     user,
                     room,
+                    modify,
                     executionContext.searchEmail?.keywords,
-                    executionContext.searchEmail?.time
+                    executionContext.searchEmail?.startDate,
+                    executionContext.searchEmail?.endDate
                 );
                 break;
             case "send-message":

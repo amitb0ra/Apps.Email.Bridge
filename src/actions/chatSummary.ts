@@ -12,16 +12,22 @@ import { IMessageRaw } from "@rocket.chat/apps-engine/definition/messages/IMessa
 import { ISummary } from "../definations/ISummary";
 import { set } from "../helpers/persistence";
 
-// TODO: summarize thread/channel/discussion by time, user, unread, attachments, get assigned tasks etc.
 export async function chatSummary(
     user: IUser,
     room: IRoom,
     read: IRead,
     http: IHttp,
-    persistence: IPersistence
+    persistence: IPersistence,
+    threadId?: string
 ) {
     try {
-        const messages = await getRoomMessages(room, read);
+        let messages: string;
+        if (threadId) {
+            messages = await getThreadMessages(room, read, user, threadId);
+            console.log("Thread messages: ", messages);
+        } else {
+            messages = await getRoomMessages(room, read);
+        }
 
         if (!messages || messages.trim().length === 0) {
             await sendMessage(
@@ -73,4 +79,28 @@ async function getRoomMessages(room: IRoom, read: IRead): Promise<string> {
         });
 
     return messages.map((message) => message.text).join("\n");
+}
+
+async function getThreadMessages(
+    room: IRoom,
+    read: IRead,
+    user: IUser,
+    threadId: string
+): Promise<string> {
+    const thread = await read.getThreadReader().getThreadById(threadId);
+
+    if (!thread) {
+        await sendMessage(read, user, room, "Thread not found");
+        throw new Error("Thread not found");
+    }
+
+    const messages = thread
+        .filter((message) => message.text)
+        .map((message) => message.text);
+
+    if (messages.length > 1 && messages[0] === messages[1]) {
+        messages.shift();
+    }
+
+    return messages.join("\n");
 }

@@ -32,6 +32,7 @@ export class EmailCommand implements ISlashCommand {
         const command = context.getArguments();
         const sender = context.getSender();
         const room = context.getRoom();
+        const threadId = context.getThreadId();
 
         if (!Array.isArray(command)) {
             return;
@@ -63,9 +64,11 @@ export class EmailCommand implements ISlashCommand {
                         sender,
                         room,
                         read,
+                        modify,
                         http,
                         persis,
-                        executionContext
+                        executionContext,
+                        threadId
                     );
                 }
         }
