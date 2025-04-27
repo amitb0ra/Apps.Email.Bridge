@@ -9,9 +9,11 @@ import { IUser } from "@rocket.chat/apps-engine/definition/users";
 import { IExecutionContext } from "../definations/IExecutionContext";
 import { EmailBridgeApp } from "../../EmailBridgeApp";
 import { chatSummary } from "../actions/chatSummary";
-import { getReport, searchEmail, sendEmail } from "../actions/gmail";
+import { getReport, searchEmail } from "../actions/gmail";
 import { sendMessage } from "../helpers/message";
 import { get } from "../helpers/persistence";
+import { confirmSendEmail } from "../modal/confirmSendEmail";
+import { SlashCommandContext } from "@rocket.chat/apps-engine/definition/slashcommands/SlashCommandContext";
 
 export async function executeAction(
     app: EmailBridgeApp,
@@ -20,15 +22,23 @@ export async function executeAction(
     read: IRead,
     modify: IModify,
     http: IHttp,
+    context: SlashCommandContext,
     persistence: IPersistence,
     executionContext: IExecutionContext,
-    threadId?: string,
+    threadId?: string
 ) {
     for (const actionId of executionContext.actionIds) {
         switch (actionId) {
             case "summary":
                 console.log("Summary action triggered");
-                await chatSummary(user, room, read, http, persistence, threadId);
+                await chatSummary(
+                    user,
+                    room,
+                    read,
+                    http,
+                    persistence,
+                    threadId
+                );
                 break;
             case "send-email":
                 console.log("Send email action triggered");
@@ -53,18 +63,26 @@ export async function executeAction(
                     `${user.id}#SUMMARY`
                 );
 
+                const triggerId = context.getTriggerId() as string;
+                const userId = context.getSender();
+
                 if (summary) {
                     console.log("Summary found in persistence");
-                    await sendEmail(
-                        app,
-                        http,
-                        read,
-                        user,
-                        room,
-                        summary.subject,
-                        summary.body,
-                        executionContext.sendEmail.recipients
-                    );
+                    const modal = await confirmSendEmail({
+                        modify: modify,
+                        read: read,
+                        persistence: persistence,
+                        http: http,
+                        slashCommandContext: context,
+                        uiKitContext: undefined,
+                        subject: summary.subject,
+                        body: summary.body,
+                        recipients: executionContext.sendEmail.recipients,
+                    });
+
+                    await modify
+                        .getUiController()
+                        .openModalView(modal, { triggerId }, userId);
                 } else {
                     console.log("No summary found in persistence");
                     if (
@@ -80,17 +98,24 @@ export async function executeAction(
                         );
                         return;
                     }
-                    await sendEmail(
-                        app,
-                        http,
-                        read,
-                        user,
-                        room,
-                        executionContext.sendEmail.subject,
-                        executionContext.sendEmail.body,
-                        executionContext.sendEmail.recipients
-                    );
+
+                    const modal = await confirmSendEmail({
+                        modify: modify,
+                        read: read,
+                        persistence: persistence,
+                        http: http,
+                        slashCommandContext: context,
+                        uiKitContext: undefined,
+                        subject: executionContext.sendEmail.subject,
+                        body: executionContext.sendEmail.body,
+                        recipients: executionContext.sendEmail.recipients,
+                    });
+
+                    await modify
+                        .getUiController()
+                        .openModalView(modal, { triggerId }, userId);
                 }
+
                 break;
             case "search-email":
                 console.log("Search email action triggered");

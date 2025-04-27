@@ -66,6 +66,7 @@ export class EmailCommand implements ISlashCommand {
                         read,
                         modify,
                         http,
+                        context,
                         persis,
                         executionContext,
                         threadId

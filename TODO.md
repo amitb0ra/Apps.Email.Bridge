@@ -30,12 +30,14 @@
 ## MORE FUN (AFTER MVP):
 
 1. /email auth - more email providers
+    - get default email provider from user using rocket chat
     - google - authenticate google email
     - outlook - authenticate outlook email
 
 2. /email contact - open contact manage contextual bar
     - CRUD on contacts
     - get contact list from email provider
+    - add contact with username and get email from rocket chat
 
 3. get execution context
     - if "out of context", open modal to provide more context and retry
@@ -48,16 +50,16 @@
 1. summary
     - summarize based on filter of time, usernames, unread, etc.
     - select how you want summary like follow up questions, assigned tasks etc.
-    - file summary
+    - file or email summary
 2. send email
     - open modal to edit email or confirm before sending.
+    - create email content with LLM
     - more parameters like cc, bcc, attachments etc.
 3. search emails
     - based on unread, from, to, cc, bcc, etc.
     - open modal to list emails and select which ones to send to channel.
 4. report
     - daily/weekly/monthly report
-    - report on unread emails, emails sent, emails received, from whom, topics etc.
+    - report on unread emails, emails sent, emails received, from whom, topics etc. 
+    - important emails notification to user itself
 5. more email functions like change label etc.
-6. send notification of new emails
-7. etc.

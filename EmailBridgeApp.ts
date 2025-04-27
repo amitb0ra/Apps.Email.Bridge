@@ -18,6 +18,8 @@ import { IAppInfo } from "@rocket.chat/apps-engine/definition/metadata";
 import { EmailCommand } from "./src/commands/EmailCommand";
 import { OAuth2Client } from "@rocket.chat/apps-engine/server/oauth2/OAuth2Client";
 import { sendHelperMessageOnInstall } from "./src/helpers/message";
+import { UIKitViewSubmitInteractionContext } from "@rocket.chat/apps-engine/definition/uikit/UIKitInteractionContext";
+import { ExecuteViewSubmitHandler } from "./src/handlers/ExecuteViewSubmitHandler";
 export class EmailBridgeApp extends App {
     constructor(info: IAppInfo, logger: ILogger, accessors: IAppAccessors) {
         super(info, logger, accessors);
@@ -81,5 +83,22 @@ export class EmailBridgeApp extends App {
         const { user } = context;
         await sendHelperMessageOnInstall(user, read, modify);
         return;
+    }
+
+    public async executeViewSubmitHandler(
+        context: UIKitViewSubmitInteractionContext,
+        read: IRead,
+        http: IHttp,
+        persistence: IPersistence,
+        modify: IModify
+    ) {
+        const handler = new ExecuteViewSubmitHandler(
+            this,
+            read,
+            http,
+            modify,
+            persistence
+        );
+        return await handler.run(context);
     }
 }
